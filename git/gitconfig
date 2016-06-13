@@ -1,12 +1,12 @@
 [init]
-    templatedir = ~/profile/git/gittemplate
+    templatedir = ~/.profile_config/git/gittemplate
 
 [core]
     editor = vim
     autocrlf = input
     safecrlf = warn
     whitespace = trailing-space,space-before-tab
-    excludesfile = ~/profile/git/gitignore
+    excludesfile = ~/.profile_config/git/gitignore
 
 [web]
     google-chrome
@@ -39,12 +39,12 @@
     export = archive -o latest.tar.gz -9 --prefix=latest/
     unstage = reset HEAD --
     re = reset
-    rawdiff = !git --no-pager diff
-    dsf = !git diff --color $@ | diff-so-fancy
+    #rawdiff = !git --no-pager diff
+    #dsf = !git diff --color $@ | diff-so-fancy
 
-[pager]
-    diff = diff-so-fancy | less -SFX
-    show = diff-so-fancy | less -SFX
+#[pager]
+    #diff = diff-so-fancy | less -SFX
+    #show = diff-so-fancy | less -SFX
 
 [color "diff-highlight"]
     oldNormal = red bold
