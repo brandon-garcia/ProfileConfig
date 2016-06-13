@@ -1,0 +1,24 @@
+#!/bin/bash
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+    DIR="$( cd -P "$(dirname "$SOURCE")" && pwd )"
+    SOURCE="$(readlink "$SOURCE")"
+    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+export PROFILE_DIR="$( cd -P "$(dirname "$SOURCE")/.." && pwd)"
+
+ln -sf $PROFILE_DIR/bash/login ~/.bash_profile
+ln -sf $PROFILE_DIR/vim/vimrc ~/.vimrc
+ln -sf $PROFILE_DIR/inputrc ~/.inputrc
+ln -sf $PROFILE_DIR/git/gitconfig ~/.gitconfig
+ln -sf $PROFILE_DIR/fonts ~/.fonts
+
+# install fonts
+sudo fc-cache -fv
+
+# install vim plugins
+if [ ! -d "$PROFILE_DIR/vim/runtime/src" ]
+then
+    $PROFILE_DIR/vim/install.sh
+fi

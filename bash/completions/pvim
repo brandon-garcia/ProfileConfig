@@ -1,0 +1,19 @@
+#!/bin/bash
+
+function _pvim () {
+    # last arg so far
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    # dirname-esque, but makes "xyz/" => "xyz/" not "."
+    curb=$(echo $cur | sed 's,[^/]*$,,')
+
+    cmd="find $PROFILE_DIR$curb -maxdepth 1 -type d -printf %p/\n , -type f -print "
+    #cmd="find $profile$curb -maxdepth 1 -type d -printf %p/\n "
+
+    opts=$($cmd | sed s:$PROFILE_DIR:: | sed s://*$:/:)
+
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    return 0;
+}
+
+complete -o nospace -F _pvim pvim

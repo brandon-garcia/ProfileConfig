@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo apache2ctl start

@@ -1,0 +1,35 @@
+#!/bin/bash
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# If not running interactively, don't do anything
+[[ -n "${BASH_VERSION}" ]] || return
+
+shopt -s histappend
+HISTCONTROL=ignoreboth
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+#shopt -s checkwinsize
+shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+eval "$(SHELL=/bin/sh lesspipe)"
+
+# enable color support for ls
+test -r $PROFILE_DIR/bash/dircolors && eval "$(dircolors -b $PROFILE_DIR/bash/dircolors)" || eval "$(dircolors -b)"
+
+# neccessary?
+export LESS='--tabs=4 -R'
+
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+fi
+
+if [ -f /etc/bash_completion.d/git-prompt ]; then
+    . /etc/bash_completion.d/git-prompt
+fi
+
+. $PROFILE_DIR/bash/aliases
+. $PROFILE_DIR/bash/prompt
+. $PROFILE_DIR/bash/completions/*
+

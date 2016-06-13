@@ -1,0 +1,141 @@
+#!/bin/bash
+
+RESET=$(tput sgr0)
+BOLD=$(tput bold)
+NOBOLD=$(tput rmso)
+
+BLACK=$(tput setaf 0)
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+BLUE=$(tput setaf 4)
+MAGENTA=$(tput setaf 5)
+CYAN=$(tput setaf 6)
+WHITE=$(tput setaf 7)
+PLAIN=$(tput setaf 9)
+
+function unexpand_home_tilde() {
+    # add trailing slash to distinguish from /home/usernameOFSOMEONEELSE
+    local here=$1/
+    # substitute ~/ for $HOME/ 
+    local friendly=${here/$HOME\//\~\/}
+    # remove the trailing slash before emitting
+    friendly=${friendly/%\/}
+    echo $friendly
+}
+
+# decide what color a path should be based on some attributes about it
+# echos an ANSI sequence
+function color_for_path() {
+    # default color
+    local dircolor=$BOLD$BLUE
+    local here="$1"
+    local perms=$(stat --format=%a "$here")
+    if [[ -L $here ]]; then
+        # dir is a symlink
+        dircolor=$BOLD$CYAN
+    elif [[ "$perms" -eq 700 ]]; then
+        # private-only dir
+        dircolor=$MAGENTA
+    elif [[ "$perms" -eq 777 ]]; then
+        # world-writable dir
+        dircolor=$YELLOW
+    elif [[ ! -w "$here" ]]; then
+        # dir not writable for me
+        dircolor=$RESET
+    fi
+    # TODO any other cases?  non-owned dir?  group-writable dir?
+    # sticky bits?  (stat returns 1777 for /tmp)
+    echo "$dircolor"
+}
+
+
+# echos a path with each segment individually colorized
+# also inserts \[ \] sequences, for use in $PS1
+function colorize_path_segments() {
+    local path="$(unexpand_home_tilde "$1")"
+    IFS='/' read -ra segs <<< "$path"
+
+    local accum=""
+    local output=""
+
+    for seg in "${segs[@]}"; do
+        if [[ $seg == '~' ]]; then
+            accum=$HOME
+        else
+            accum="$accum/$seg"
+        fi
+        local col=$(color_for_path "$accum")
+        output="\[$RESET\]$output\[$RESET$col\]$seg\[$BOLD$BLUE\]/"
+    done
+
+    # remove trailing slash
+    output=${output/%\/}
+    echo "$output\[$RESET\]"
+}
+
+
+
+######################################################################
+# Initialize a series of variables, related to prompt config
+# these are static for the life of a shell
+case "$USER" in
+    root|Administrator) 
+        usercolor=$BOLD$RED;
+        terminator='#'
+        ;;
+    *) 
+        usercolor=$GREEN
+        terminator=∫
+        ;;
+esac
+
+case "$HOSTNAME" in 
+    localhost)         hostcolor=$GREEN ;;
+    *)              hostcolor=$BOLD$YELLOW ;;
+esac
+
+# enable fancy git prompt if possible
+# TODO: deal with distros that don't have this already sourced?
+if [ "$(type -t __git_ps1)" == "function" ]; then
+    # enable extra git info
+    GIT_PS1_SHOWDIRTYSTATE=1        #... untagged(*) and staged(+) changes
+    GIT_PS1_SHOWSTASHSTATE=1        #... stashed($) changes
+    GIT_PS1_SHOWUNTRACKEDFILES=1    #... untracked files(%)
+    GIT_PS1_SHOWUPSTREAM=1          # trying this out too
+    GIT_PS1_SHOWCOLORHINTS=1        # not sure what this does
+    gitsection="\[$BOLD$RED\]\$(__git_ps1 '(%s)')"
+else
+    gitsection=""
+fi
+
+
+# identify chroot if we're in one, to prefix the prompt below
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+function build_prompt() {
+    local p="${debian_chroot:+($debian_chroot)}"
+    p="$p\[$usercolor\]\u"
+    p="$p\[$RESET$YELLOW\]@"
+    p="$p\[$hostcolor\]\h"
+    p="$p\[$RESET\]:"
+    p=$p$(colorize_path_segments "`pwd`")
+    p="$p$gitsection"
+    p="$p\[$RESET\]$terminator "
+
+    echo "$p"
+}
+
+case "$TERM" in
+    # support non-color fallback for unknown terminals
+    # TODO: find more reliable method of detecting color capability
+    # maybe $(tput colors)...  does cygwin have tput?
+    konsole|konsole-256color|xterm-color|xterm-256color|xterm|cygwin|linux|screen|screen-256color) 
+        export PROMPT_COMMAND='PS1="$(build_prompt)"'
+        ;;
+    *) 
+        PS1='${prefix}\u@\h:\w\$ '
+        ;;
+esac

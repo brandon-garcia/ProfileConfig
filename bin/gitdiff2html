@@ -1,0 +1,7 @@
+#!/bin/bash
+
+git dsf $@ > /tmp/tmp-gitdiff2html
+
+sed -i -e 's/─/-/g' /tmp/tmp-gitdiff2html
+
+ansi2html < /tmp/tmp-gitdiff2html

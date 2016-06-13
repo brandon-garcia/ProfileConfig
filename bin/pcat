@@ -1,0 +1,2 @@
+#!/bin/bash
+cat $PROFILE_DIR/$1

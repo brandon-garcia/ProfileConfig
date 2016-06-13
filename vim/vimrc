@@ -1,0 +1,25 @@
+set runtimepath+=$PROFILE_DIR/vim/runtime
+
+set t_Co=256
+let g:sql_type_default = 'mysql'
+
+source $PROFILE_DIR/vim/cfg/plugins.vim
+source $PROFILE_DIR/vim/cfg/functions.vim
+source $PROFILE_DIR/vim/cfg/basic.vim
+source $PROFILE_DIR/vim/cfg/mappings.vim
+
+
+"set expandtab
+set hidden
+set list
+set number
+set listchars=tab:!·,trail:·
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+set title
+let g:airline_powerline_fonts = 1
+
+autocmd VimEnter * call AirlineInit()
+colorscheme mytheme
+let g:airline_theme="bubblegum"

@@ -1,0 +1,1 @@
+runtime/colors/mytheme.vim
