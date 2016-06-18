@@ -1,18 +1,27 @@
 #!/bin/bash
 
-if [[ ! -z $(readlink -e "$1" 2>/dev/null) ]]; then
-	PROG=$(readlink -e "$1" 2>/dev/null)
-else
-	PROG="$1"
-fi
+PROG="$1"
+shift
 
-if [[ "$#" -eq "2" ]]; then
-	while read -r f || [[ -n "$f" ]]; do
-		echo "$($PROG "$f")"
-	done<"$2"
+if [[ ! -z $(readlink -e "$PROG" 2>/dev/null) ]]; then
+	PROG=$(readlink -e "$PROG" 2>/dev/null)
+	if [[ "$#" -eq "1" ]]; then
+		while read -r FILE || [[ -n "$f" ]]; do
+			$PROG $FILE
+		done<"$1"
+	else
+		while read -r FILE || [[ -n "$f" ]]; do
+			$PROG $FILE
+		done
+	fi
 else
-	while read -r f || [[ -n "$f" ]]; do
-		echo "$($PROG "$f")"
-	done
+	if [[ "$#" -eq "1" ]]; then
+		while read -r FILE || [[ -n "$f" ]]; do
+			eval "$PROG"
+		done<"$1"
+	else
+		while read -r FILE || [[ -n "$f" ]]; do
+			eval "$PROG"
+		done
+	fi
 fi
-
