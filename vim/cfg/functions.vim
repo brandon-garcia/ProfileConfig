@@ -70,3 +70,6 @@ function! AirlineInit() "{{{
 	let g:airline_section_z = airline#section#create_right(['%l','%c'])
 endfunction
 "------------------------}}}
+
+" xclip
+command! -range=% -nargs=0 Clip :<line1>,<line2>w !Clip
