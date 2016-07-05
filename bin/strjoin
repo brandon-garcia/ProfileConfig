@@ -1,0 +1,5 @@
+#!/bin/bash
+delim="$1"
+shift
+list=$(for i in $@; do printf "$delim'%s'" $i; done)
+echo "${list:1}"
