@@ -8,6 +8,9 @@
     whitespace = trailing-space,space-before-tab
     excludesfile = ~/.profile_config/git/gitignore
 
+[push]
+    default = nothing
+
 [web]
     google-chrome
 

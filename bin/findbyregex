@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -rl "$1" 2> /dev/null
+grep -rl "$1" 2> /dev/null | grep -v '[.]git[/]'
