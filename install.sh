@@ -30,7 +30,8 @@ if [ ! -d "$PROFILE_DIR/vim/runtime/src" ]; then
            airblade/vim-gitgutter.git   \
            ctrlpvim/ctrlp.vim.git       \
         vim-airline/vim-airline.git     \
-        vim-airline/vim-airline-themes
+        vim-airline/vim-airline-themes  \
+          godlygeek/tabular
 fi
 
 cd $ORIG_DIR
