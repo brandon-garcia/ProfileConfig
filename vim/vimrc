@@ -9,7 +9,7 @@ source $PROFILE_DIR/vim/cfg/basic.vim
 source $PROFILE_DIR/vim/cfg/mappings.vim
 source $PROFILE_DIR/vim/cfg/abbreviations.vim
 
-"set expandtab
+set expandtab
 set hidden
 set list
 set number
