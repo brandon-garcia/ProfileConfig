@@ -8,6 +8,13 @@
     whitespace = trailing-space,space-before-tab
     excludesfile = ~/.profile_config/git/gitignore
 
+[merge]
+    tool = vimdiff
+    conflictstyle = diff3
+
+[mergetool]
+    prompt = false
+
 [push]
     default = nothing
 
