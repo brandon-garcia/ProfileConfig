@@ -7,7 +7,6 @@ PROFILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 ln -sf $PROFILE/bash/login        ~/.bash_profile
 ln -sf $PROFILE/fonts             ~/.fonts
 ln -sf $PROFILE/git/gitconfig     ~/.gitconfig
-ln -sf $PROFILE/git/gitcompletion ~/.git_completion.sh
 ln -sf $PROFILE/inputrc           ~/.inputrc
 ln -sf $PROFILE/vim/vimrc         ~/.vimrc
 
