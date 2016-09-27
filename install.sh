@@ -4,11 +4,12 @@ ORIG_DIR="$(pwd)"
 PROFILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
 # make profile symlinks
-ln -sf $PROFILE/bash/login      ~/.bash_profile
-ln -sf $PROFILE/fonts           ~/.fonts
-ln -sf $PROFILE/git/gitconfig   ~/.gitconfig
-ln -sf $PROFILE/inputrc         ~/.inputrc
-ln -sf $PROFILE/vim/vimrc       ~/.vimrc
+ln -sf $PROFILE/bash/login        ~/.bash_profile
+ln -sf $PROFILE/fonts             ~/.fonts
+ln -sf $PROFILE/git/gitconfig     ~/.gitconfig
+ln -sf $PROFILE/git/gitcompletion ~/.git_completion.sh
+ln -sf $PROFILE/inputrc           ~/.inputrc
+ln -sf $PROFILE/vim/vimrc         ~/.vimrc
 
 # install gnome terminal color scheme
 gconftool-2 --load $PROFILE_DIR/gnome-terminal-conf.xml
