@@ -1,0 +1,110 @@
+#!/usr/bin/expect -f
+
+#
+# Ex. Usage: mysql-batch-runner report1.sql report2.sql report3.sql
+#
+# No explicit limit to number of individual reports to run but there
+# must be at least one report for the program to process
+#
+# Note: results deposited in local working directory
+#
+
+proc genprefix {} {
+    set min 10000000
+    set max 99999999
+    return [pid][expr {int(rand()*($max-$min+1)+$min)}]
+}
+
+proc scpfile {password from to} {
+    spawn scp $from $to
+    expect {
+        "password: " { exp_send "$password\r" }
+        "$ "         { return $spawn_id       }
+    }
+    expect "$ "
+    return $spawn_id
+}
+
+proc sshlogin {host password} {
+    spawn ssh $host
+    expect {
+        "password: " { exp_send "$password\r" }
+        "$ "         { return $spawn_id       }
+    }
+    expect "$ "
+    return $spawn_id
+}
+
+proc getinput {prompt} {
+    send_user -- $prompt
+    expect_user -re "(.*)\n"
+    send_user "\n"
+    set input $expect_out(1,string)
+    return $input
+}
+
+proc getinput_hidden {prompt} {
+    stty -echo
+    send_user -- $prompt
+    expect_user -re "(.*)\n"
+    send_user "\n"
+    stty echo
+    set input $expect_out(1,string)
+    return $input
+}
+
+# timeout = unlimited
+set timeout -1
+
+set prefix [exec randomhex 8]
+
+set ssh_host [getinput        "ssh host: "]
+set ssh_pass [getinput_hidden "ssh password: "]
+set dbtype   [getinput        "database type (mysql/postgres): "]
+set dbname   [getinput        "database name: "]
+set dbpass   [getinput_hidden "database password: "]
+
+# send each of the files passed as cmdline params
+# to the host server's /tmp/ directory with the same filename
+foreach lf $argv {
+    set rf "[file tail $lf]"
+    set upload "[scpfile $ssh_pass $lf $ssh_host:/tmp/$prefix$rf]"
+}
+
+# start ssh-session on server
+# and cd into /tmp/ directory
+
+set ssh_sid [sshlogin $ssh_host $ssh_pass]
+
+# switch to ssh session
+exp_send -i $ssh_sid "cd /tmp\r"
+expect   -i $ssh_sid "$ "
+
+# run each of the passed sql files
+# on the remote server, saving the input
+# with .tsv extension because that is
+# the format mysql outputs when used in this way
+foreach lf $argv {
+    set fsql "$prefix[file tail $lf]"
+    set ftsv "[file rootname $fsql]"
+    exp_send -i $ssh_sid "mysql --local-infile -A -D $dbname -p$dbpass < $fsql > $ftsv.tsv\r"
+    expect   -i $ssh_sid "$ "
+}
+
+# retrieve the results
+foreach lf $argv {
+    set rf "[file rootname [file tail $lf]]"
+    set download "[scpfile $ssh_pass $ssh_host:/tmp/$prefix$rf.tsv $rf.tsv]"
+}
+
+# cleanup
+
+foreach lf $argv {
+    set fsql "$prefix[file tail $lf]"
+    exp_send -i $ssh_sid "rm [file rootname $fsql].tsv\r"
+    expect   -i $ssh_sid "$ "
+}
+
+exp_send -i $ssh_sid "exit\r"
+
+send_user "\nDONE!\n"

@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo unoconv -i FilterOptions=09,,system,1 -f xls $@

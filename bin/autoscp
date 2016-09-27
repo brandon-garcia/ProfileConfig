@@ -1,0 +1,14 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+
+set password [lindex $argv 0]
+set src      [lindex $argv 1]
+set dest     [lindex $argv 2]
+
+spawn scp $src $dest
+expect {
+    "assword: " { send "$password\r" }
+    "$ "        { puts "\nFAILED!\n" }
+}
+expect "$ "     { puts "\nDONE!\n"   }

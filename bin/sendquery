@@ -1,0 +1,41 @@
+#!/usr/bin/expect -f
+set timeout -1
+
+proc getinput {prompt} {
+    send_user -- $prompt
+    expect_user -re "(.*)\n"
+    send_user "\n"
+    set input $expect_out(1,string)
+    return $input
+}
+
+proc getinput_hidden {prompt} {
+    stty -echo
+    send_user -- $prompt
+    expect_user -re "(.*)\n"
+    send_user "\n"
+    stty echo
+    set input $expect_out(1,string)
+    return $input
+}
+
+set query [lindex $argv 0]
+
+# prompt for ssh hostname, pass current user implicitly
+set ssh_host [getinput        "ssh host: "]
+set ssh_pass [getinput_hidden "ssh password: "]
+set dbname   [getinput        "database name: "]
+set dbpass   [getinput_hidden "database password: "]
+
+# start ssh-session on server
+log_user 0
+spawn ssh $ssh_host
+expect {
+    "password: " { exp_send "$ssh_pass\r" ; exp_continue }
+    "$ " { exp_send "mysql -A -D $dbname -p$dbpass -e \"$query;\"\r" }
+}
+
+expect "$ "
+send_user "$expect_out(buffer)"
+exp_send "exit\r"
+send_user "\nDONE!\n"
