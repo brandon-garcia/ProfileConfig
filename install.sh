@@ -1,14 +1,22 @@
 #!/bin/bash
 
+function git_clone() {
+    for $repo in $@; do
+        if [ ! -d "$(dirname $repo)" ]; then
+            git clone https://github.com/$repo
+        fi
+    done
+}
+
 ORIG_DIR="$(pwd)"
 PROFILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
 # make profile symlinks
-ln -sf $PROFILE/bash/login        ~/.bash_profile
-ln -sf $PROFILE/fonts             ~/.fonts
-ln -sf $PROFILE/git/gitconfig     ~/.gitconfig
-ln -sf $PROFILE/inputrc           ~/.inputrc
-ln -sf $PROFILE/vim/vimrc         ~/.vimrc
+ln -sf $PROFILE_DIR/bash/login        ~/.bash_profile
+ln -sf $PROFILE_DIR/fonts             ~/.fonts
+ln -sf $PROFILE_DIR/git/gitconfig     ~/.gitconfig
+ln -sf $PROFILE_DIR/inputrc           ~/.inputrc
+ln -sf $PROFILE_DIR/vim/vimrc         ~/.vimrc
 
 # install gnome terminal color scheme
 gconftool-2 --load $PROFILE_DIR/gnome-terminal-conf.xml
@@ -35,11 +43,3 @@ if [ ! -d "$PROFILE_DIR/vim/runtime/src" ]; then
 fi
 
 cd $ORIG_DIR
-
-function git_clone() {
-    for $repo in $@; do
-        if [ ! -d "$(dirname $repo)" ]; then
-            git clone https://github.com/$repo
-        fi
-    done
-}
