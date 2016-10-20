@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function git_clone() {
-    for $repo in $@; do
+    for repo in $@; do
         if [ ! -d "$(dirname $repo)" ]; then
             git clone https://github.com/$repo
         fi
