@@ -2,7 +2,11 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
 # If not running interactively, don't do anything
-[[ -n "${BASH_VERSION}" ]] || return
+#[[ -n "${BASH_VERSION}" ]] || return
+case $- in
+    *i*) ;;
+      *) return ;;
+esac
 
 shopt -s histappend
 HISTCONTROL=ignoreboth

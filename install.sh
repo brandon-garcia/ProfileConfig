@@ -39,7 +39,8 @@ if [ ! -d "$PROFILE_DIR/vim/runtime/src" ]; then
            ctrlpvim/ctrlp.vim.git       \
         vim-airline/vim-airline.git     \
         vim-airline/vim-airline-themes  \
-          godlygeek/tabular
+          godlygeek/tabular             \
+              tpope/vim-fugitive
 fi
 
 cd $ORIG_DIR

@@ -80,7 +80,7 @@ cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 
 
-inoremap ;; <esc>
+"inoremap ;; <esc>
 nnoremap <F12> :set invnumber<cr>:set invlist<cr>:GitGutterToggle<cr>
 nnoremap <Tab> %
 vnoremap <Tab> %
