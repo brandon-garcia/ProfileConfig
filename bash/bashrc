@@ -32,4 +32,5 @@ fi
 . $PROFILE_DIR/bash/aliases
 . $PROFILE_DIR/bash/prompt
 . $PROFILE_DIR/bash/completions/*
+. $PROFILE_DIR/bash/functions
 
