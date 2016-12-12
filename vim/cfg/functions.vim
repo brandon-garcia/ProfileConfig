@@ -72,4 +72,12 @@ endfunction
 "------------------------}}}
 
 " xclip
-command! -range=% -nargs=0 Clip :<line1>,<line2>w !Clip
+command! -range=% -nargs=0 Clip :<line1>,<line2>w !xclip
+
+function! DiffToggle()
+	if &diff
+		diffoff
+	else
+		diffthis
+	endif
+endfunction
