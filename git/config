@@ -1,12 +1,8 @@
-[init]
-    templatedir = ~/.profile_config/git/gittemplate
-
 [core]
     editor = vim
     autocrlf = input
     safecrlf = warn
     whitespace = trailing-space,space-before-tab
-    excludesfile = ~/.profile_config/git/gitignore
 
 [merge]
     tool = vimdiff

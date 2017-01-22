@@ -10,9 +10,9 @@ case $- in
 esac
 
 shopt -s histappend
-HISTCONTROL=ignoreboth
-HISTSIZE=1000
-HISTFILESIZE=2000
+export HISTCONTROL=ignoreboth
+export HISTSIZE=1000
+export HISTFILESIZE=2000
 
 #shopt -s checkwinsize
 shopt -s globstar

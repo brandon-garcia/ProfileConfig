@@ -1,0 +1,2 @@
+#!/bin/bash
+source $PROFILE_DIR/bash/login
