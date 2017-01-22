@@ -2,25 +2,33 @@
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
-    DIR="$( cd -P "$(dirname "$SOURCE")" && pwd )"
-    SOURCE="$(readlink "$SOURCE")"
-    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+	DIR="$( cd -P "$(dirname "$SOURCE")" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 export PROFILE_DIR="$( cd -P "$(dirname "$SOURCE")/.." && pwd)"
-
-sed -i '' "s/%PROFILE_DIR%/$PROFILE_DIR" $PROFILE_DIR/git/gitconfig
 
 ln -sf $PROFILE_DIR/bash/login ~/.bash_profile
 ln -sf $PROFILE_DIR/vim/vimrc ~/.vimrc
 ln -sf $PROFILE_DIR/inputrc ~/.inputrc
-ln -sf $PROFILE_DIR/git/gitconfig ~/.gitconfig
+ln -sf $PROFILE_DIR/git/config ~/.gitconfig
 ln -sf $PROFILE_DIR/fonts ~/.fonts
-
-# install fonts
-#sudo fc-cache -fv
 
 # install vim plugins
 if [ ! -d "$PROFILE_DIR/vim/runtime/src" ]
 then
-    $PROFILE_DIR/vim/install.sh
+	$PROFILE_DIR/vim/install.sh
 fi
+
+git config --global core.excludesfile $PROFILE_DIR/git/ignore
+
+mkdir -p $PROFILE_DIR/git/template/hooks
+
+for hook in $(ls $PROFILE_DIR/git/hooks)
+do
+	ln -s $PROFILE_DIR/git/hooks/$hook $PROFILE_DIR/git/template/hooks/$hook
+done
+
+
+$PROFILE_DIR/bin/pload
+

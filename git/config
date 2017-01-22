@@ -1,12 +1,8 @@
-[init]
-    templatedir = %PROFILE_CONFIG%/git/gittemplate
-
 [core]
     editor = vim
     autocrlf = input
     safecrlf = warn
     whitespace = trailing-space,space-before-tab
-    excludesfile = %PROFILE_CONFIG%/git/gitignore
 
 [web]
     google-chrome
