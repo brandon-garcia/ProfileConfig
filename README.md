@@ -5,5 +5,4 @@ There are numerous dependencies that I have not documented but likely will
 at some point.
 
 Installation:
-- run 'bin/pinstall' located in the ProfileConfig (or whatever it was named) directory
-- logout and then log back in or if using cygwin, restart cygwin.
+- run 'install' located in the ProfileConfig (or whatever it was named) directory
