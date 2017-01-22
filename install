@@ -3,7 +3,7 @@
 function git_clone() {
     for repo in $@; do
         if [ ! -d "$(dirname $repo)" ]; then
-            git clone https://github.com/${repo}.git
+            git clone https://github.com:${repo}.git
         fi
     done
 }
@@ -13,7 +13,6 @@ PROFILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
 # make profile symlinks
 ln -sf $PROFILE_DIR/bash/login ~/.bash_profile
-ln -sf $PROFILE_DIR/fonts      ~/.fonts
 ln -sf $PROFILE_DIR/git/config ~/.gitconfig
 ln -sf $PROFILE_DIR/inputrc    ~/.inputrc
 ln -sf $PROFILE_DIR/vim/vimrc  ~/.vimrc
