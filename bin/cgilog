@@ -1,9 +1,0 @@
-#!/bin/bash
-
-a2log \
-| grep 'cgi:error' \
-| cut -d ']' -f 5 \
-| perl -ne 's/ AH\d+: \\t/    /g; print;' \
-| perl -ne 's/ End of script output before headers: (.+)/    \1 ended prematurely\n/g; print;' \
-| perl -ne 's/AH\d{5}: LINE/         LINE/g; print;' \
-| perl -ne 's/AH\d{5}:(   *\^)/        \1/g; print;'
