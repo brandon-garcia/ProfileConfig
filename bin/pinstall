@@ -8,6 +8,8 @@ while [ -h "$SOURCE" ]; do
 done
 export PROFILE_DIR="$( cd -P "$(dirname "$SOURCE")/.." && pwd)"
 
+sed -i '' "s/%PROFILE_DIR%/$PROFILE_DIR" $PROFILE_DIR/git/gitconfig
+
 ln -sf $PROFILE_DIR/bash/login ~/.bash_profile
 ln -sf $PROFILE_DIR/vim/vimrc ~/.vimrc
 ln -sf $PROFILE_DIR/inputrc ~/.inputrc
@@ -15,7 +17,7 @@ ln -sf $PROFILE_DIR/git/gitconfig ~/.gitconfig
 ln -sf $PROFILE_DIR/fonts ~/.fonts
 
 # install fonts
-sudo fc-cache -fv
+#sudo fc-cache -fv
 
 # install vim plugins
 if [ ! -d "$PROFILE_DIR/vim/runtime/src" ]
