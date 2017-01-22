@@ -12,17 +12,23 @@ ORIG_DIR="$(pwd)"
 PROFILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
 # make profile symlinks
-ln -sf $PROFILE_DIR/bash/login        ~/.bash_profile
-ln -sf $PROFILE_DIR/fonts             ~/.fonts
-ln -sf $PROFILE_DIR/git/gitconfig     ~/.gitconfig
-ln -sf $PROFILE_DIR/inputrc           ~/.inputrc
-ln -sf $PROFILE_DIR/vim/vimrc         ~/.vimrc
+ln -sf $PROFILE_DIR/bash/login ~/.bash_profile
+ln -sf $PROFILE_DIR/fonts      ~/.fonts
+ln -sf $PROFILE_DIR/git/config ~/.gitconfig
+ln -sf $PROFILE_DIR/inputrc    ~/.inputrc
+ln -sf $PROFILE_DIR/vim/vimrc  ~/.vimrc
 
 # install gnome terminal color scheme
 gconftool-2 --load $PROFILE_DIR/gnome-terminal-conf.xml
 
-# install fonts
-sudo fc-cache -fv
+git config --global core.excludesfile $PROFILE_DIR/git/ignore
+
+mkdir -p $PROFILE_DIR/git/template/hooks
+
+for hook in $(ls $PROFILE_DIR/git/hooks)
+do
+	ln -s $PROFILE_DIR/git/hooks/$hook $PROFILE_DIR/git/template/hooks/$hook
+done
 
 # install vim plugins
 cd $PROFILE_DIR/vim/runtime
@@ -41,4 +47,7 @@ git_clone                           \
       godlygeek/tabular             \
           tpope/vim-fugitive
 
+$PROFILE_DIR/bin/pload
+cd $PROFILE_DIR
+git init
 cd $ORIG_DIR
