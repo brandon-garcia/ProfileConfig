@@ -2,9 +2,9 @@
 
 function git_clone() {
 	for repo in $@; do
-		if [ ! -d "$(dirname $repo)" ]; then
-			git clone https://github.com/${repo}.git
-		elif [[ "$repo" -eq "vim-airline/vim-airline-themes" ]]; then
+		repo_dir=${repo##*/}
+		repo_dir=${repo_dir%.git}
+		if [ ! -d "$repo_dir" ]; then
 			git clone https://github.com/${repo}.git
 		fi
 	done
@@ -28,7 +28,7 @@ mkdir -p $PROFILE_DIR/git/template/hooks
 
 for hook in $(ls $PROFILE_DIR/git/hooks)
 do
-	ln -s $PROFILE_DIR/git/hooks/$hook $PROFILE_DIR/git/template/hooks/$hook
+	ln -sf $PROFILE_DIR/git/hooks/$hook $PROFILE_DIR/git/template/hooks/$hook
 done
 
 # install vim plugins
