@@ -17,6 +17,5 @@ alias scat='sudo cat'
 alias stail='sudo tail'
 alias shead='sudo head'
 
-alias pload='source $PROFILE_DIR/bash/login'
 alias plist='ls $PROFILE_DIR/bin'
 alias pdir='cd $PROFILE_DIR'
