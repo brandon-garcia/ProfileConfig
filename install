@@ -1,11 +1,13 @@
 #!/bin/bash
 
 function git_clone() {
-    for repo in $@; do
-        if [ ! -d "$(dirname $repo)" ]; then
-            git clone https://github.com/${repo}.git
-        fi
-    done
+	for repo in $@; do
+		if [ ! -d "$(dirname $repo)" ]; then
+			git clone https://github.com/${repo}.git
+		elif [[ "$repo" -eq "vim-airline/vim-airline-themes" ]]; then
+			git clone https://github.com/${repo}.git
+		fi
+	done
 }
 
 ORIG_DIR="$(pwd)"
@@ -34,17 +36,17 @@ cd $PROFILE_DIR/vim/runtime
 mkdir -p tmp src
 cd src
 
-git_clone                           \
-    jlanzarotta/bufexplorer         \
-     scrooloose/nerdtree            \
-          tpope/vim-commentary      \
-     scrooloose/syntastic           \
-       airblade/vim-gitgutter       \
-       ctrlpvim/ctrlp.vim           \
-    vim-airline/vim-airline         \
-    vim-airline/vim-airline-themes  \
-      godlygeek/tabular             \
-          tpope/vim-fugitive
+git_clone                          \
+	jlanzarotta/bufexplorer        \
+	scrooloose/nerdtree            \
+	tpope/vim-commentary           \
+	scrooloose/syntastic           \
+	airblade/vim-gitgutter         \
+	ctrlpvim/ctrlp.vim             \
+	vim-airline/vim-airline        \
+	vim-airline/vim-airline-themes \
+	godlygeek/tabular              \
+	tpope/vim-fugitive
 
 $PROFILE_DIR/bin/pload
 cd $PROFILE_DIR
