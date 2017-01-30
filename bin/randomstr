@@ -1,0 +1,28 @@
+#!/bin/bash
+
+width=16
+range='a-zA-Z0-9'
+while getopts ":w:r:h" opt; do
+	case $opt in
+		w) width="$OPTARG"
+		;;
+		r) range="$OPTARG"
+			if [[ "$range" = ":ALNUM:" ]]; then
+				range='a-zA-Z0-9'
+			elif [[ "$range" = ":HEX:" ]]; then
+				range='A-F0-9'
+			elif [[ "$range" = ":NUM:" ]]; then
+				range='0-9'
+			elif [[ "$range" = ":ALPHA:" ]]; then
+				range='a-zA-Z'
+			elif [[ "$range" = ":PASSWORD:" ]]; then
+				range='a-zA-Z0-9@#$%'
+			fi
+		;;
+		h)
+			echo "usage randomstr -w <width> -r <char_range>";
+			exit 0
+	esac
+done
+
+cat /dev/urandom | tr -cd $range | head -c $width

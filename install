@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function git_clone() {
+function github_clone() {
 	for repo in $@; do
 		repo_dir=${repo##*/}
 		repo_dir=${repo_dir%.git}
@@ -18,6 +18,7 @@ ln -sf $PROFILE_DIR/bash/login ~/.bash_profile
 ln -sf $PROFILE_DIR/git/config ~/.gitconfig
 ln -sf $PROFILE_DIR/inputrc    ~/.inputrc
 ln -sf $PROFILE_DIR/vim/vimrc  ~/.vimrc
+ln -sf $PROFILE_DIR/fonts      ~/.fonts
 
 # install gnome terminal color scheme
 gconftool-2 --load $PROFILE_DIR/gnome-terminal-conf.xml
@@ -36,7 +37,7 @@ cd $PROFILE_DIR/vim/runtime
 mkdir -p tmp src
 cd src
 
-git_clone                          \
+github_clone                       \
 	jlanzarotta/bufexplorer        \
 	scrooloose/nerdtree            \
 	tpope/vim-commentary           \
