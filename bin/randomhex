@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if [ "$#" -ne '1' ]; then
-    width=16
-else
-    width=$1
-fi
-
-cat /dev/urandom | tr -cd 'a-f0-9' | head -c $width

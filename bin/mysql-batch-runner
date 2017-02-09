@@ -56,7 +56,7 @@ proc getinput_hidden {prompt} {
 # timeout = unlimited
 set timeout -1
 
-set prefix [exec randomhex 8]
+set prefix [exec randomstr -w8 -r':HEX:']
 
 set ssh_host [getinput        "ssh host: "]
 set ssh_pass [getinput_hidden "ssh password: "]
