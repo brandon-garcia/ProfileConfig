@@ -13,7 +13,7 @@ function git_clone() {
 ORIG_DIR="$(pwd)"
 
 # Important! used by profile scripts
-PROFILE_DIR="$( cd -P "$(dirname "$SOURCE")/.." && pwd )"
+PROFILE_DIR="$( cd -P "$(dirname "${BASH_SOURCE[0]}")/.." && pwd )"
 /bin/bash "$PROFILE_DIR/install/update-paths.sh"
 /bin/bash "$PROFILE_DIR/install/install-vim-plugins.sh"
 gconftool-2 --load $PROFILE_DIR/gnome-terminal-conf.xml

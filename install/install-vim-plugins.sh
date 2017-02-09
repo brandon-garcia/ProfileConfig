@@ -11,7 +11,7 @@ function git_clone() {
 }
 
 ORIG_DIR="$(pwd)"
-PROFILE_DIR="$( cd -P "$(dirname "$SOURCE")/.." && pwd )"
+PROFILE_DIR="$( cd -P "$(dirname "${BASH_SOURCE[0]}")/.." && pwd )"
 
 # install vim plugins
 cd $PROFILE_DIR/vim/runtime/src
