@@ -13,11 +13,14 @@ function git_clone() {
 ORIG_DIR="$(pwd)"
 PROFILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
+mkdir -p $PROFILE_DIR/fonts
+
 # make profile symlinks
-ln -sf $PROFILE_DIR/bash/login ~/.bash_profile
-ln -sf $PROFILE_DIR/git/config ~/.gitconfig
-ln -sf $PROFILE_DIR/inputrc    ~/.inputrc
-ln -sf $PROFILE_DIR/vim/vimrc  ~/.vimrc
+ln -s $PROFILE_DIR/bash/login ~/.bash_profile
+ln -s $PROFILE_DIR/git/config ~/.gitconfig
+ln -s $PROFILE_DIR/inputrc    ~/.inputrc
+ln -s $PROFILE_DIR/vim/vimrc  ~/.vimrc
+ln -s $PROFILE_DIR/fonts      ~/.fonts
 
 # install gnome terminal color scheme
 gconftool-2 --load $PROFILE_DIR/gnome-terminal-conf.xml
