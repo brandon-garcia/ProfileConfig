@@ -1,0 +1,8 @@
+#!/bin/bash
+
+_dir="$(pwd)"
+if [ "$#" -gt "0" ]; then
+	_dir="$1"
+fi
+
+find $_dir -type d -empty -delete

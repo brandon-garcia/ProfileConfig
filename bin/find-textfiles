@@ -1,0 +1,6 @@
+#!/bin/bash
+find $1 -type f -print0 | \
+xargs -0r file | \
+grep 'ASCII text' | \
+awk -F: '{print $1}' | \
+sed 's/^\.\///'
