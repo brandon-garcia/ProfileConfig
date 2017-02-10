@@ -1,41 +1,35 @@
 #!/usr/bin/expect -f
 set timeout -1
 
-proc getinput {prompt} {
-    send_user -- $prompt
-    expect_user -re "(.*)\n"
-    send_user "\n"
-    set input $expect_out(1,string)
-    return $input
+proc getauth {host dbtype database} {
+	spawn bash
+	expect -re {[^ ] $}
+	set auth_data [split [exec auth -h $host -t $dbtype -d $database] "\n"]
+	send "exit\r"
+	return $auth_data
 }
 
-proc getinput_hidden {prompt} {
-    stty -echo
-    send_user -- $prompt
-    expect_user -re "(.*)\n"
-    send_user "\n"
-    stty echo
-    set input $expect_out(1,string)
-    return $input
+proc sshlogin {host password} {
+	spawn ssh $host
+	expect {
+			{assword: }        { send "$password\r" ; exp_continue }
+		-re {[^a-zA-Z_0-9 ] $} {                                   }
+		-re {[^a-zA-Z_0-9 ]$}  {                                   }
+	}
+	return $spawn_id
 }
 
-set query [lindex $argv 0]
+set ssh_host [lindex $argv 0]
+set db_type  [lindex $argv 1]
+set db_name  [lindex $argv 2]
+set query    [lindex $argv 3]
 
-# prompt for ssh hostname, pass current user implicitly
-set ssh_host [getinput        "ssh host: "]
-set ssh_pass [getinput_hidden "ssh password: "]
-set dbname   [getinput        "database name: "]
-set dbpass   [getinput_hidden "database password: "]
+set auth_data [getauth $ssh_host $db_type $db_name]
+set ssh_pass  [lindex $auth_data 0]
+set db_cmd    [lindex $auth_data 1]
+set db_pass   [lindex $auth_data 2]
 
-# start ssh-session on server
-log_user 0
-spawn ssh $ssh_host
-expect {
-    "password: " { exp_send "$ssh_pass\r" ; exp_continue }
-    "$ " { exp_send "mysql -A -D $dbname -p$dbpass -e \"$query;\"\r" }
-}
-
-expect "$ "
-send_user "$expect_out(buffer)"
-exp_send "exit\r"
-send_user "\nDONE!\n"
+set spawn_id [sshlogin $ssh_host $ssh_pass]
+expect -re {[$∫] } { exp_send "$db_cmd -e \"$query;\"\r" }
+expect -re {[$∫] } { exp_send "exit\r" }
+send_user "\n"

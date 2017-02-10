@@ -1,0 +1,72 @@
+#!/usr/bin/expect -f
+set timeout -1
+set ::prompt "(#|>|\$|∫) ?$"
+
+proc getauth {host dbtype database} {
+	spawn bash
+	set auth_data [split [exec auth -h $host -t $dbtype -d $database] "\n"]
+	exp_send "exit\r"
+	return $auth_data
+}
+
+proc sshlogin {host password} {
+	spawn ssh $host
+	expect {
+		{assword: } { exp_send "$password\r" ; exp_continue }
+		-re {[$∫] } { send_user "\n"                        }
+	}
+	return $spawn_id
+}
+
+proc scpfile {password from to} {
+	spawn scp $from $to
+	expect {
+		{assword: } { exp_send "$password\r" ; exp_continue }
+		-re {[$∫] } { send_user "\n"                        }
+	}
+}
+
+set prefix   [exec randomstr -w8 -r ":HEX:"]
+set ssh_host [lindex $argv 0]
+set db_type  [lindex $argv 1]
+set db_name  [lindex $argv 2]
+set files    [lrange $argv 3 end]
+
+set auth_data [getauth $ssh_host $db_type $db_name]
+set ssh_pass  [lindex $auth_data 0]
+set db_cmd    [lindex $auth_data 1]
+set db_pass   [lindex $auth_data 2]
+
+# send files
+foreach lf $files {
+	set rf [file tail $lf]
+	scpfile $ssh_pass $lf $ssh_host:/tmp/$prefix$rf
+}
+
+# start ssh-session on server
+set sshSID [sshlogin $ssh_host $ssh_pass]
+
+# run files
+exp_send -i $sshSID "cd /tmp\r"
+expect -i $sshSID -re $::prompt
+foreach lf $files {
+	set fsql "$prefix[file tail $lf]"
+	exp_send -i $sshSID "$db_cmd < $fsql > [file rootname $fsql].tsv\r"
+	expect   -i $sshSID -re {[$∫] ?$}
+}
+
+# retrieve results
+foreach lf $files {
+	set rf [file rootname [file tail $lf]]
+	scpfile $ssh_pass $ssh_host:/tmp/$prefix$rf.tsv $rf.tsv
+}
+
+# cleanup
+foreach lf $files {
+	set fsql "$prefix[file tail $lf]"
+	exp_send -i $sshSID "rm [file rootname $fsql].tsv\r"
+	expect   -i $sshSID -re {[$∫] }
+}
+
+# exit ssh
+exp_send -i $sshSID "exit\r"

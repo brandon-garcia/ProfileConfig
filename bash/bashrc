@@ -38,3 +38,5 @@ fi
 . $PROFILE_DIR/bash/completions/*
 . $PROFILE_DIR/bash/functions
 
+export KEEPASS_DB=""
+export PERL5LIB="$PROFILE_DIR/include:$PERL5LIB"

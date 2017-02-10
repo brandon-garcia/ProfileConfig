@@ -1,0 +1,47 @@
+#!/usr/bin/expect -f
+set timeout -1
+
+if {$argc > 0} {
+	set ssh_host [lindex $argv 0]
+
+	spawn bash
+	expect -re {[^ ] $}
+
+	if {$argc > 2} {
+		set db_type [lindex $argv 1]
+		set db_name [lindex $argv 2]
+		set auth_data [split [exec auth -h $ssh_host -t $db_type -d $db_name] "\n"]
+	} else {
+		set auth_data [split [exec auth -h $ssh_host] "\n"]
+	}
+
+	exp_send "exit\r"
+
+	set ssh_pass  [lindex $auth_data 0]
+
+	spawn ssh $ssh_host
+	if {$argc > 1} {
+		set db_cmd    [lindex $auth_data 1]
+		set db_pass   [lindex $auth_data 2]
+		expect {
+			{Permission denied, please try again.} { interact   }
+			{assword: } { send "$ssh_pass\r" ; exp_continue     }
+			-re {[$∫] } { exp_send "$db_cmd\r"                  }
+		}
+		expect {
+			{Permission denied, please try again.} { interact   }
+			{assword: } { exp_send "$db_pass\r" ; exp_continue  }
+			{[$∫] }        { interact                              }
+			"# "        { interact                              }
+			{> }        { interact                              }
+		}
+	} else {
+		expect {
+			{Permission denied, please try again.} { interact   }
+			{assword: } { exp_send "$ssh_pass\r" ; exp_continue }
+			-re {[$∫] } { interact                              }
+		}
+	}
+} else {
+	send_user "usage: connectdb <host> [<dbtype> <dbname>]\n"
+}

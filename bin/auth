@@ -1,0 +1,89 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use autodie;
+use Getopt::Long qw(GetOptions);
+use UserLib::Auth;
+
+sub get_keepass_master;
+sub is_postgresql;
+sub is_mysql;
+
+my ($host,$dbtype,$dbname) = ('','','');
+GetOptions(
+	'h:s' => \$host,
+	't:s' => \$dbtype,
+	'd:s' => \$dbname
+);
+
+my $master_pass = '';
+my $creds = UserLib::Auth->new($master_pass)->get($host);
+
+print ''.($creds->{ssh}->{p}?$creds->{ssh}->{p}:0)."\n";
+if ($dbname) {
+	my %db = build_db_cmd($creds, $dbtype, $dbname);
+	print ''.($db{cmd}?$db{cmd}:0)."\n";
+	print ''.($db{p}?$db{p}:0)."\n";
+}
+
+sub build_db_cmd {
+	my ($creds, $type, $name) = @_;
+	my $cmd = '0';
+	my $type = undef;
+
+	if ($type eq 'mysql') {
+		$cmd = build_mysql_cmd($creds, $name);
+	} elsif ($type eq 'psql') {
+		$cmd = build_psql_cmd($creds, $name);
+	}
+
+	return () if $cmd eq '0';
+	return ('cmd',$cmd,'p',$creds->{$type}->{p});
+}
+
+sub build_mysql_cmd {
+	my ($creds, $dbname) = @_;
+	return 0 unless ($creds->{mysql}->{p});
+
+	my $cmd  = "mysql --local-infile -A";
+
+	if ($dbname) {
+		$cmd .= ' -D '.$dbname;
+	}
+
+	if ($creds->{host}) {
+		$cmd .= ' -h '.$creds->{host};
+	}
+
+	if ($creds->{mysql}->{u}) {
+		$cmd .= ' -u '.$creds->{mysql}->{u};
+	}
+
+	if ($creds->{mysql}->{p}) {
+		$cmd .= ' -p'.$creds->{mysql}->{p};
+	}
+
+	return $cmd;
+}
+
+sub build_psql_cmd {
+	my ($creds, $dbname) = @_;
+	my $cmd = 'psql';
+
+	if ($dbname) {
+		$cmd .= ' -d '.$dbname;
+	}
+
+	if ($creds->{psql}->{u}) {
+		$cmd .= ' -U '.$creds->{psql}->{u};
+	}
+
+	if ($creds->{psql}->{p}) {
+		$cmd .= ' -W';
+	} else {
+		return 0;
+	}
+
+	return $cmd;
+}
+
