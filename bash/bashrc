@@ -20,6 +20,9 @@ shopt -s globstar
 # make less more friendly for non-text input files, see lesspipe(1)
 eval "$(SHELL=/bin/sh lesspipe)"
 
+export PROFILE_DIR="$(dirname "$(dirname "$(readlink -f ~/.bash_profile)")")"
+export PATH="$PROFILE_DIR/bin:$PATH"
+
 # enable color support for ls
 test -r $PROFILE_DIR/bash/dircolors && eval "$(dircolors -b $PROFILE_DIR/bash/dircolors)" || eval "$(dircolors -b)"
 

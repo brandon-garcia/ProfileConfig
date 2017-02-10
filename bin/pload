@@ -1,2 +1,3 @@
-#!/bin/bash
-source $PROFILE_DIR/bash/login
+#!/bin/sh
+export PROFILE_DIR="$(dirname "$(dirname "$(readlink -f ~/.bash_profile)")")"
+. $PROFILE_DIR/bash/login

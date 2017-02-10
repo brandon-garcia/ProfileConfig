@@ -11,7 +11,8 @@ function git_clone() {
 }
 
 ORIG_DIR="$(pwd)"
-PROFILE_DIR="$( cd -P "$(dirname "${BASH_SOURCE[0]}")/.." && pwd )"
+export PROFILE_DIR="$(dirname "$(dirname "$(readlink -f ~/.bash_profile)")")"
+export PATH="$PROFILE_DIR/bin:$PATH"
 
 # install vim plugins
 cd $PROFILE_DIR/vim/runtime/src
