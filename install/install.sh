@@ -10,15 +10,16 @@ function git_clone() {
 	done
 }
 
-export PROFILE_DIR="$(dirname "$(dirname "$(readlink -f ~/.bash_profile)")")"
+ORIG_DIR="$(pwd)"
+
+export PROFILE_DIR="$( cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" && pwd )"
+
 export PATH="$PROFILE_DIR/bin:$PATH"
 
 /bin/bash "$PROFILE_DIR/install/update-paths.sh"
 /bin/bash "$PROFILE_DIR/install/install-vim-plugins.sh"
 gconftool-2 --load $PROFILE_DIR/gnome-terminal-conf.xml
 
-
-ORIG_DIR="$(pwd)"
 cd $PROFILE_DIR
 git init
 cd $ORIG_DIR

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-PROFILE_DIR="$(dirname "$(dirname "$(readlink -f ~/.bash_profile)")")"
+export PROFILE_DIR="$( cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" && pwd )"
+
 PATH="$PROFILE_DIR/bin:$PATH"
 
 mkdir -p "$PROFILE_DIR/fonts"
