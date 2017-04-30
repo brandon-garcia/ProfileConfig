@@ -1,27 +1,30 @@
 #/bin/bash
 
-if [[ "$1" -eq "log" ]]; then
+if [[ "$1" == "log" ]]; then
 	cat /var/log/apache2/error.log
 
-elif [[ "$1" -eq "acclog" ]]; then
+elif [[ "$1" == "acclog" ]]; then
 	cat /var/log/apache2/access.log
 
-elif [[ "$1" -eq "clear" ]]; then
+elif [[ "$1" == "clear" ]]; then
 	sudo sh -c ">/var/log/apache2/error.log"
 
-elif [[ "$1" -eq "start" ]]; then
-	sudo apache2ctl start
+elif [[ "$1" == "start" ]]; then
+	sudo service apache2 start
 
-elif [[ "$1" -eq "reload" ]]; then
+elif [[ "$1" == "stop" ]]; then
+	sudo apache2ctl graceful-stop
+
+elif [[ "$1" == "reload" ]]; then
 	sudo service apache2 reload
 
-elif [[ "$1" -eq "restart" ]]; then
-	sudo service apache2 restart
+elif [[ "$1" == "restart" ]]; then
+	sudo apache2ctl restart
 
-elif [[ "$1" -eq "status" ]]; then
+elif [[ "$1" == "status" ]]; then
 	sudo apache2ctl status
 
-elif [[ "$1" -eq "phplog" ]]; then
+elif [[ "$1" == "phplog" ]]; then
 	a2 log \
 	| grep 'PHP' \
 	| cut -d ']' -f 5 \
@@ -34,7 +37,7 @@ elif [[ "$1" -eq "phplog" ]]; then
 	| perl -ne 's/^([A-Z][a-z]+): +([a-zA-Z].*)$/\1:\n    \2/g; print;' \
 	| perl -ne 's/ in / in:\n        /g; print;'
 
-elif [[ "$1" -eq "cgilog" ]]; then
+elif [[ "$1" == "cgilog" ]]; then
 	a2 log \
 	| grep 'cgi:error' \
 	| cut -d ']' -f 5 \
