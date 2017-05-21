@@ -20,5 +20,5 @@ set title
 let g:airline_powerline_fonts = 1
 
 autocmd VimEnter * call AirlineInit()
-colorscheme mytheme
+colorscheme solarized
 let g:airline_theme="bubblegum"

@@ -5,6 +5,7 @@
 	whitespace = trailing-space,space-before-tab
 
 [merge]
+	ff = only
 	tool = vimdiff
 	conflictstyle = diff3
 
