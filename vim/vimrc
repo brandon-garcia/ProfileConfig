@@ -1,24 +1,24 @@
-set runtimepath+=$PROFILE_DIR/vim/runtime
+set nocompatible
+filetype off
 
-set t_Co=256
-let g:sql_type_default = 'mysql'
+set rtp+=$PROFILE_DIR/vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'altercation/vim-colors-solarized'
+call vundle#end()
 
+source $PROFILE_DIR/vim/cfg/general.vim
+source $PROFILE_DIR/vim/cfg/mappings.vim
 source $PROFILE_DIR/vim/cfg/plugins.vim
 source $PROFILE_DIR/vim/cfg/functions.vim
-source $PROFILE_DIR/vim/cfg/basic.vim
-source $PROFILE_DIR/vim/cfg/mappings.vim
 
-"set expandtab
-set hidden
-set list
-set number
-set listchars=tab:!·,trail:·
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-set title
-let g:airline_powerline_fonts = 1
-
-autocmd VimEnter * call AirlineInit()
-colorscheme solarized
-let g:airline_theme="bubblegum"
