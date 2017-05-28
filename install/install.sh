@@ -18,7 +18,6 @@ export PATH="$PROFILE_DIR/bin:$PATH"
 
 /bin/bash "$PROFILE_DIR/install/update-paths.sh"
 /bin/bash "$PROFILE_DIR/install/install-vim-plugins.sh"
-gconftool-2 --load $PROFILE_DIR/gnome-terminal-conf.xml
 
 cd $PROFILE_DIR
 git init
