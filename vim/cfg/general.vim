@@ -7,14 +7,15 @@ filetype plugin on
 filetype indent on
 
 set t_Co=256
-colorscheme solarized
+
+syntax enable
+set background=dark
+"colorscheme solarized
 
 let g:sql_type_default = 'mysql'
 
 
 set viminfo^=%
-
-syntax enable 
 
 "-----------------------------------------------------------}}}
 " => Buffers -----------------------------------------------{{{
