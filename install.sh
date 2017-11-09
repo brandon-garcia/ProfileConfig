@@ -13,6 +13,6 @@ sudo cpan install \
     File::Path \
     Cwd \
     Git::Repository \
-    Getopt::Long \
+    Getopt::Long
 
 perl $PROFILE_DIR/install/install.pl
