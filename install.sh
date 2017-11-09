@@ -1,7 +1,12 @@
 #!/bin/bash
 export PROFILE_DIR=$(pwd)
 
-sudo apt-get install git cpan vim
+sudo apt-get install \
+    git \
+    cpan \
+    vim \
+    expect
+
 sudo cpan install \
     File::KeePass \
     File::Basename \
