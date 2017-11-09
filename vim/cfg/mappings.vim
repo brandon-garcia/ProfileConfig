@@ -65,7 +65,7 @@ map <leader>p :setlocal paste!<cr>
 
 map <leader>o :BufExplorer<cr>
 map <leader>j :CtrlP<cr>
-map <c-b> :CtrlPBuffer<cr>
+map <c-m> :CtrlPMRU<cr>
 
 map <leader>n :NERDTreeToggle<cr>
 map <leader>nb :NERDTreeFromBookmark 

@@ -24,7 +24,7 @@ set autoread
 " A buffer becomes hidden when it is abandoned
 set hid
 
-" Specify the behavior when switching between buffers 
+" Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -56,14 +56,14 @@ endtry
 " Ignore case when searching
 "set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Highlight search results
 set hlsearch
 
 " Makes search act like search in modern browsers
-set incsearch 
+set incsearch
 
 " For regular expressions turn magic on
 set magic
@@ -110,10 +110,10 @@ set whichwrap+=<,>,h,l
 "set mouse=a
 
 " Don't redraw while executing macros (good performance config)
-set lazyredraw 
+set lazyredraw
 
 " Show matching brackets when text indicator is over them
-set showmatch 
+set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
