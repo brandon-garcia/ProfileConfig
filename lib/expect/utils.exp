@@ -1,0 +1,37 @@
+
+proc getinput {prompt} {
+    send_user "$prompt"
+    set timeout -1
+    expect_user -re ".*)\n"
+    send_user "\n"
+    return $expect_out(1,string)
+}
+
+proc getpass {prompt} {
+    set oldmode [stty -echo -raw]
+    set input [getinput $prompt]
+    eval stty $oldmode
+    return $input
+}
+
+proc keepass_get {group title masterpass} {
+    return [split [exec auth -p=$masterpass -g=$group -t=$title] "\n"]
+}
+
+proc scp {src dest password} {
+    spawn scp $src $dest
+    expect {
+        {assword: } { exp_send "$password\r" ; exp_continue }
+        eof { send_user "\n" }
+    }
+}
+
+proc ssh {host password} {
+    spawn ssh $host
+    expect {
+        {assword: } { exp_send "$password\r" }
+        {$ }        { return $spawn_id       }
+    }
+    expect {$ }
+    return $spawn_id
+}

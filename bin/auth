@@ -1,0 +1,13 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use autodie;
+use Getopt::Long qw(GetOptions);
+use lib $ENV{PROFILE_DIR}.'/lib/perl';
+use Profile::Auth;
+
+my %params = ();
+GetOptions(\%params, 'group|g=s', 'title|t=s', 'password|p=s');
+
+my $creds = UserLib::Auth->new($ENV{KEEPASS_DB}, $params{password})->get($params{group}, $params{title});
+print join("\n", $creds) . "\n";
