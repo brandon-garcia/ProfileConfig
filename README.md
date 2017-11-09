@@ -5,4 +5,4 @@ There are numerous dependencies that I have not documented but likely will
 at some point.
 
 Installation:
-- run 'install' located in the ProfileConfig (or whatever it was named) directory
+- run 'install.sh' from the repo root directory
