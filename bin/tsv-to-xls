@@ -1,2 +1,5 @@
 #!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
 sudo unoconv -i FilterOptions=09,,system,1 -f xls $@

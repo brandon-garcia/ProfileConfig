@@ -1,4 +1,8 @@
 #!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+
 export PROFILE_DIR=$(pwd)
 
 sudo apt-get install \
