@@ -30,8 +30,6 @@ proc ssh {host password} {
     spawn ssh $host
     expect {
         {assword: } { exp_send "$password\r" }
-        {$ }        { return $spawn_id       }
     }
-    expect {$ }
     return $spawn_id
 }
