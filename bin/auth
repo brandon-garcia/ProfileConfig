@@ -9,5 +9,5 @@ use Profile::Auth;
 my %params = ();
 GetOptions(\%params, 'group|g=s', 'title|t=s', 'password|p=s');
 
-my $creds = UserLib::Auth->new($ENV{KEEPASS_DB}, $params{password})->get($params{group}, $params{title});
+my $creds = Profile::Auth->new($ENV{KEEPASS_DB}, $params{password})->get($params{group}, $params{title});
 print join("\n", $creds) . "\n";
