@@ -3,20 +3,29 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-export PROFILE_DIR=$(pwd)
+PROFILE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-sudo apt-get install \
-    git \
-    cpan \
-    vim \
-    expect
+PATH="$PROFILE_DIR/bin:$PATH"
 
-sudo cpan install \
-    File::KeePass \
-    File::Basename \
-    File::Path \
-    Cwd \
-    Git::Repository \
-    Getopt::Long
+mkdir -p $PROFILE_DIR/fonts
+mkdir -p $PROFILE_DIR/git/template/hooks
+mkdir -p $PROFILE_DIR/vim/tmp
+mkdir -p $PROFILE_DIR/vim/bundle
 
-perl $PROFILE_DIR/install/install.pl
+ln -sf $PROFILE_DIR/bash/login ~/.bash_profile
+ln -sf $PROFILE_DIR/bash/bashrc ~/.bashrc
+ln -sf $PROFILE_DIR/git/config ~/.gitconfig
+ln -sf $PROFILE_DIR/inputrc ~/.inputrc
+ln -sf $PROFILE_DIR/vim/vimrc ~/.vimrc
+ln -sf $PROFILE_DIR/fonts ~/.fonts
+
+for hook in $( cd $PROFILE_DIR/git/hooks ; ls ); do
+    ln -sf $PROFILE_DIR/git/hooks/$hook $PROFILE_DIR/git/template/hooks/$hook
+done
+
+git config --global core.excludesfile $PROFILE_DIR/git/ignore
+git init
+
+git clone https://github.com/VundleVim/Vundle.vim.git $PROFILE_DIR/vim/bundle/Vundle.vim
+vim +PluginInstall +qall
+
