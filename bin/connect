@@ -3,7 +3,7 @@ set PROFILE_DIR $::env(PROFILE_DIR)
 source "$PROFILE_DIR/lib/expect/utils.exp"
 set master_password [getpass "Enter master password: "]
 set ssh_host [lindex $argv 0]
-set ssh_pass [lindex [keepass_get "ssh" "$ssh_host" "$master_password"] 0]
+set ssh_pass [lindex [keepass_get "ssh" "$ssh_host" "$master_password"] 1]
 
 set timeout -1
 set pid_ssh [ssh $ssh_host $ssh_pass]

@@ -14,7 +14,7 @@ if {[regexp {^([^:]*):(.*)$} $src -> host file]} {
     set ssh_host "localhost"
 }
 
-set ssh_pass [lindex [keepass_get "ssh" "$host" "$master_password"] 0]
+set ssh_pass [lindex [keepass_get "ssh" "$host" "$master_password"] 1]
 
 set timeout -1
 scp $src $dest $ssh_pass
