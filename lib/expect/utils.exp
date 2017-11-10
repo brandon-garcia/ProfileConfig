@@ -2,7 +2,7 @@
 proc getinput {prompt} {
     send_user "$prompt"
     set timeout -1
-    expect_user -re ".*)\n"
+    expect_user -re "(.*)\n"
     send_user "\n"
     return $expect_out(1,string)
 }
