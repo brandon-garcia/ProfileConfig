@@ -89,6 +89,7 @@ set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 set smarttab
+set expandtab
 set shiftwidth=4
 set tabstop=4
 
@@ -129,5 +130,8 @@ set hidden
 set list
 set number
 set listchars=tab:!·,trail:·
+
+" Height of the command bar
+set cmdheight=1
 
 "-----------------------------------------------------------}}}
