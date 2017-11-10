@@ -19,6 +19,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'fatih/vim-go'
 Plugin 'udalov/kotlin-vim'
 call vundle#end()
+filetype plugin indent on
 
 if exists('airline#*')
     source $PROFILE_DIR/vim/cfg/general.vim
