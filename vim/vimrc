@@ -18,6 +18,8 @@ Plugin 'majutsushi/tagbar'
 Plugin 'pangloss/vim-javascript'
 Plugin 'fatih/vim-go'
 Plugin 'udalov/kotlin-vim'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'm-kat/aws-vim'
 call vundle#end()
 
 source $PROFILE_DIR/vim/cfg/general.vim

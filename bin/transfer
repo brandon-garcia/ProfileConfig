@@ -5,16 +5,5 @@ source "$PROFILE_DIR/lib/expect/utils.exp"
 set master_password [getpass "Enter master password: "]
 set src [lindex $argv 0]
 set dest [lindex $argv 1]
+transfer $src $dest $master_password
 
-if {[regexp {^([^:]*):(.*)$} $src -> host file]} {
-    set ssh_host $host
-} elseif {[regexp {^([^:]*):(.*)$} $dest -> host file]} {
-    set ssh_host $host
-} else {
-    set ssh_host "localhost"
-}
-
-set ssh_pass [lindex [keepass_get "ssh" "$host" "$master_password"] 1]
-
-set timeout -1
-scp $src $dest $ssh_pass

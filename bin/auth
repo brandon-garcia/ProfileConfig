@@ -1,13 +1,18 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use autodie;
-use Getopt::Long qw(GetOptions);
+use feature 'say';
 use lib $ENV{PROFILE_DIR}.'/lib/perl';
-use Profile::Auth;
 
-my %params = ();
-GetOptions(\%params, 'group|g=s', 'title|t=s', 'password|p=s');
+use Getopt::Long qw(GetOptions);
+use KeePass::Reader qw(read_kpdb);
 
-my $creds = Profile::Auth->new($ENV{KEEPASS_DB}, $params{password})->get($params{group}, $params{title});
-print join("\n", $creds) . "\n";
+my %params;
+GetOptions(\%params, 'entry|e=s', 'password|p=s');
+
+my $entry = read_kpdb($ENV{KEEPASS_DB}, $params{password})
+                ->get($params{entry});
+
+say $entry->username;
+say $entry->password;
+say $entry->notes;

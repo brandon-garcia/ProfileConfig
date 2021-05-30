@@ -17,6 +17,13 @@ let g:sql_type_default = 'mysql'
 
 set viminfo^=%
 
+
+"-----------------------------------------------------------}}}
+" => Clipboard ---------------------------------------------{{{
+
+set clipboard=unnamedplus
+
+
 "-----------------------------------------------------------}}}
 " => Buffers -----------------------------------------------{{{
 
@@ -33,7 +40,6 @@ catch
 endtry
 
 
-
 "-----------------------------------------------------------}}}
 " => Encoding & Backup -------------------------------------{{{
 set encoding=utf8
@@ -41,6 +47,7 @@ set ffs=unix,dos,mac
 set nobackup
 set nowb
 set noswapfile
+
 
 "-----------------------------------------------------------}}}
 " => Undo --------------------------------------------------{{{
@@ -69,6 +76,7 @@ set incsearch
 " For regular expressions turn magic on
 set magic
 
+
 "-----------------------------------------------------------}}}
 " => Status Line -------------------------------------------{{{
 
@@ -77,6 +85,7 @@ set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatusLineFlag()}
 set statusline+=%*
+
 
 "-----------------------------------------------------------}}}
 " => Lines & Indentation -----------------------------------{{{
