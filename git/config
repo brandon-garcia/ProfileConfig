@@ -3,6 +3,7 @@
 	autocrlf = input
 	safecrlf = warn
 	whitespace = trailing-space,space-before-tab
+	pager = diff-highlight | less
 
 [merge]
 	ff = only

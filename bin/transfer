@@ -1,9 +1,0 @@
-#!/usr/bin/expect -f
-set PROFILE_DIR $::env(PROFILE_DIR)
-source "$PROFILE_DIR/lib/expect/utils.exp"
-
-set master_password [getpass "Enter master password: "]
-set src [lindex $argv 0]
-set dest [lindex $argv 1]
-transfer $src $dest $master_password
-
